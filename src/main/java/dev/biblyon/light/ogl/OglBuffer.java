@@ -16,12 +16,11 @@
  * along with this program.
  */
 
-package dev.biblyon.light.model;
+package dev.biblyon.light.ogl;
 
 import org.lwjgl.opengl.GL20;
 
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL15.*;
 
 public class OglBuffer extends OglObject {
 
@@ -41,6 +40,16 @@ public class OglBuffer extends OglObject {
     public void setData(float[] data) {
         bind();
         glBufferData(target, data, type);
+    }
+
+    public void setSubData(int offset, float[] data) {
+        bind();
+        glBufferSubData(target, offset, data);
+    }
+
+    public void setSubData(int offset, int[] data) {
+        bind();
+        glBufferSubData(target, offset, data);
     }
 
     @Override

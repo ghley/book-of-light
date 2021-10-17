@@ -16,7 +16,7 @@
  * along with this program.
  */
 
-package dev.biblyon.light.model;
+package dev.biblyon.light.ogl;
 
 import dev.biblyon.principle.utils.PrincipleUtils;
 import org.lwjgl.opengl.GL20;

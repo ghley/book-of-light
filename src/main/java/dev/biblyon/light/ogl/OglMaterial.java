@@ -16,13 +16,7 @@
  * along with this program.
  */
 
-package dev.biblyon.light.model;
+package dev.biblyon.light.ogl;
 
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-
-public class OglArrayBuffer extends OglBuffer {
-
-    public OglArrayBuffer() {
-        super(GL_ARRAY_BUFFER);
-    }
+public class OglMaterial {
 }

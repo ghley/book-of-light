@@ -4,9 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>dev.biblyon.light</groupId>
+    <groupId>dev.biblyon</groupId>
     <artifactId>book-of-light</artifactId>
     <version>0.001</version>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>15</maven.compiler.source>
@@ -29,7 +30,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>dev.biblyon.principle</groupId>
+            <groupId>dev.biblyon</groupId>
             <artifactId>book-of-principle</artifactId>
             <version>0.001</version>
         </dependency>
@@ -77,6 +78,12 @@
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl-stb</artifactId>
             <classifier>${lwjgl.natives}</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

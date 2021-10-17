@@ -16,7 +16,18 @@
  * along with this program.
  */
 
-package dev.biblyon.light.model;
+package dev.biblyon.light.ogl;
 
-public class OglMaterial {
+import static org.lwjgl.opengl.GL30.glBindBufferBase;
+import static org.lwjgl.opengl.GL31.GL_UNIFORM_BUFFER;
+
+public class OglUniformBuffer extends OglBuffer{
+
+    public OglUniformBuffer() {
+        super(GL_UNIFORM_BUFFER);
+    }
+
+    public void bindBase(int index) {
+        glBindBufferBase(GL_UNIFORM_BUFFER, 0, id);
+    }
 }

@@ -16,7 +16,7 @@
  * along with this program.
  */
 
-package dev.biblyon.light.model;
+package dev.biblyon.light.ogl;
 
 import java.util.ArrayList;
 import java.util.Arrays;

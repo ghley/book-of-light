@@ -16,18 +16,18 @@
  * along with this program.
  */
 
-package dev.biblyon.light.model;
+package dev.biblyon.light.ogl;
 
-import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
+abstract class OglObject {
+    public final int id;
 
-public class OglElementArrayBuffer extends OglBuffer {
-
-    public OglElementArrayBuffer() {
-        super(GL_ELEMENT_ARRAY_BUFFER);
+    public OglObject(int id) {
+        this.id = id;
     }
 
-    @Override
-    public void setData(float[] data) {
-        throw new RuntimeException("EBOs are supposed to be int only");
-    }
+    public abstract void delete();
+
+    public abstract void bind();
+
+    public abstract void unbind();
 }
