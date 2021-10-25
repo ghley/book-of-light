@@ -26,28 +26,41 @@ import static org.lwjgl.opengl.GL30.*;
 
 public class OglVertexArray extends OglObject {
     private List<OglBuffer> referencedBuffers = new ArrayList<>();
+    private OglElementArrayBuffer elementArrayBuffer;
+
+    private int size = 0;
 
     public OglVertexArray() {
         super(glGenVertexArrays());
     }
 
-    public void bindBuffer(OglBuffer buffer, int[] sizes, int type, int typeSize) {
+    public void bindBuffer(OglBuffer buffer, int[] sizes, OglProgram.VertexAttribute[] vertexAttributes, int type, int typeSize) {
         referencedBuffers.add(buffer);
         bind();
         buffer.bind();
         int stride = Arrays.stream(sizes).sum() * typeSize; // in bytes
         int offset = 0; // in bytes
         for (int q = 0; q < sizes.length; q++) {
-            glEnableVertexAttribArray(q);
-            glVertexAttribPointer(q, sizes[q], type, false,
+            glEnableVertexAttribArray(vertexAttributes[q].ordinal());
+            glVertexAttribPointer(vertexAttributes[q].ordinal(), sizes[q], type, false,
                     stride, offset);
             offset += sizes[q] * typeSize;
         }
     }
 
     public void bindElementBuffer(OglElementArrayBuffer elementBuffer) {
+        this.elementArrayBuffer = elementBuffer;
         bind();
         elementBuffer.bind();
+    }
+
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public int getSize() {
+        return size;
     }
 
     @Override

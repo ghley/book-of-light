@@ -37,6 +37,12 @@ public class OglBuffer extends OglObject {
         glBufferData(target, data, type);
     }
 
+    public void setData(short[] data) {
+        bind();
+        glBufferData(target, data, type);
+    }
+
+
     public void setData(float[] data) {
         bind();
         glBufferData(target, data, type);
@@ -48,6 +54,11 @@ public class OglBuffer extends OglObject {
     }
 
     public void setSubData(int offset, int[] data) {
+        bind();
+        glBufferSubData(target, offset, data);
+    }
+
+    public void setSubData(int offset, short[] data) {
         bind();
         glBufferSubData(target, offset, data);
     }

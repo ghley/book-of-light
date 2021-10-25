@@ -79,4 +79,12 @@ public class OglProgram extends OglObject {
         }
         return location;
     }
+
+    public enum VertexAttribute {
+        POSITION, NORMAL, TANGENT,
+        TEXCOORD_0, JOINTS_0, WEIGHTS_0,
+        COLOR_0, TEXCOORD_1, JOINTS_1, WEIGHTS_1,
+        TEXCOORD_2, JOINTS_2,
+        WEIGHTS_2
+    }
 }

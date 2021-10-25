@@ -18,5 +18,43 @@
 
 package dev.biblyon.light.ogl;
 
+import org.joml.Vector3f;
+
 public class OglMaterial {
+    private int baseTexture = -1;
+    private int occlusion = -1;
+    private int normal = -1;
+    private int emissive = -1;
+
+    public int getBaseTexture() {
+        return baseTexture;
+    }
+
+    public void setBaseTexture(int baseTexture) {
+        this.baseTexture = baseTexture;
+    }
+
+    public int getOcclusion() {
+        return occlusion;
+    }
+
+    public void setOcclusion(int occlusion) {
+        this.occlusion = occlusion;
+    }
+
+    public int getNormal() {
+        return normal;
+    }
+
+    public void setNormal(int normal) {
+        this.normal = normal;
+    }
+
+    public int getEmissive() {
+        return emissive;
+    }
+
+    public void setEmissive(int emissive) {
+        this.emissive = emissive;
+    }
 }
