@@ -16,7 +16,24 @@
  * along with this program.
  */
 
-package dev.biblyon.light.ogl;
+package dev.biblyon.light;
 
-public final class OglProgramDatabase {
+import dev.biblyon.light.components.ModelComponents;
+import dev.biblyon.principle.ecs.components.TransformComponents;
+import org.junit.jupiter.api.Test;
+
+public class RenderViewTest {
+
+
+    @Test
+    public void test() {
+        ModelComponents components = new ModelComponents();
+        TransformComponents transforms = new TransformComponents();
+
+
+        RenderView view = new RenderView();
+        view.init();
+        view.preRender();
+        view.postRender();
+    }
 }

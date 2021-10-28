@@ -26,11 +26,13 @@ public class RenderModel {
     private final OglVertexArray vao;
     private final OglProgram program;
     private final OglMaterial material;
+    private final int size;
 
-    public RenderModel(OglVertexArray vao, OglProgram program, OglMaterial material) {
+    public RenderModel(OglVertexArray vao, OglProgram program, OglMaterial material, int size) {
         this.vao = vao;
         this.program = program;
         this.material = material;
+        this.size = size;
     }
 
     public OglVertexArray getVao() {
@@ -43,5 +45,9 @@ public class RenderModel {
 
     public OglMaterial getMaterial() {
         return material;
+    }
+
+    public int getSize() {
+        return size;
     }
 }

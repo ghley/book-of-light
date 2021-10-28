@@ -67,9 +67,10 @@ public class GLTFReader {
         for (var key : attributes) {
             var accessor = primitive.attributeAccessors.get(key);
             accessors[i] = accessor;
+            System.out.println(Arrays.toString(accessors[i].floatData));
             sizes[i] = primitive.attributeAccessors.get(key).type.size;
             if (i != 0) {
-                offsets[i] = sizes[i-1];
+                offsets[i] = sizes[i-1] + offsets[i-1];
             }
             i++;
             fullSize += accessor.count * accessor.type.size;
@@ -91,8 +92,6 @@ public class GLTFReader {
 
         short[] indices = primitive.indicesAccessor.shortData;
 
-
-
         OglElementArrayBuffer ebo = new OglElementArrayBuffer();
         ebo.setData(indices);
 
@@ -108,8 +107,8 @@ public class GLTFReader {
         int image = processImage(material.pbrMetallicRoughness.baseColorTexture.texture.image.image);
         oglMaterial.setBaseTexture(image);
 
-        OglProgram program = null;
-        var model = new RenderModel(vao, program, oglMaterial);
+        OglProgram program = new ProgramBuilder().vertex("resources/default.vs").fragment("resources/default.fs").build();
+        var model = new RenderModel(vao, program, oglMaterial, indices.length);
         return model;
     }
 

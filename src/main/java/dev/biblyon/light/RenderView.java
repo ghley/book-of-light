@@ -36,6 +36,7 @@ public class RenderView {
 
     private long window = 0;
     private boolean alive = true;
+    private float ratio = 0;
 
     public RenderView() {
         this(RenderViewConfig.DEFAULT);
@@ -43,6 +44,7 @@ public class RenderView {
 
     public RenderView(RenderViewConfig config) {
         this.config = config;
+        this.ratio = config.getWidth() / (float)config.getHeight();
     }
 
     public void init() {
@@ -75,6 +77,8 @@ public class RenderView {
         glfwSwapInterval(1);
         glfwShowWindow(window);
         GL.createCapabilities();
+
+        glEnable(GL_DEPTH_TEST);
     }
 
     private void centerFrame() {
@@ -120,5 +124,13 @@ public class RenderView {
 
         glfwTerminate();
         glfwSetErrorCallback(null).free();
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public float getRatio() {
+        return ratio;
     }
 }
