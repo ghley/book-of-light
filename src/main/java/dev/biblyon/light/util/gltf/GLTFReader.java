@@ -104,10 +104,12 @@ public class GLTFReader {
         vao.setSize(count);
 
         OglMaterial oglMaterial = new OglMaterial();
-        int image = processImage(material.pbrMetallicRoughness.baseColorTexture.texture.image.image);
-        oglMaterial.setBaseTexture(image);
+        if (material.pbrMetallicRoughness.baseColorTexture != null) {
+            int image = processImage(material.pbrMetallicRoughness.baseColorTexture.texture.image.image);
+            oglMaterial.setBaseTexture(image);
+        }
 
-        OglProgram program = new ProgramBuilder().vertex("resources/default.vs").fragment("resources/default.fs").build();
+        OglProgram program = new ProgramBuilder().vertex("resources/brdf.vs").fragment("resources/brdf.fs").build();
         var model = new RenderModel(vao, program, oglMaterial, indices.length);
         return model;
     }
@@ -188,6 +190,9 @@ public class GLTFReader {
     }
 
     private void texture() {
+        if (gltf.textures == null) {
+            return;
+        }
         for (Texture texture : gltf.textures) {
             if (texture.source != null) {
                 texture.image = gltf.images[texture.source];
@@ -285,6 +290,9 @@ public class GLTFReader {
     }
 
     private void image() {
+        if (gltf.images == null) {
+            return;
+        }
         for (Image image : gltf.images) {
             if (image.uri != null) {
                 throw new RuntimeException("Not implemented");

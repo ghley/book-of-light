@@ -18,6 +18,7 @@
 
 package dev.biblyon.light;
 
+import dev.biblyon.light.model.Camera;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
@@ -36,7 +37,8 @@ public class RenderView {
 
     private long window = 0;
     private boolean alive = true;
-    private float ratio = 0;
+
+    private Camera camera;
 
     public RenderView() {
         this(RenderViewConfig.DEFAULT);
@@ -44,7 +46,6 @@ public class RenderView {
 
     public RenderView(RenderViewConfig config) {
         this.config = config;
-        this.ratio = config.getWidth() / (float)config.getHeight();
     }
 
     public void init() {
@@ -79,6 +80,9 @@ public class RenderView {
         GL.createCapabilities();
 
         glEnable(GL_DEPTH_TEST);
+        camera = new Camera();
+        camera.setFov((float)Math.toRadians(80));
+        camera.setRatio(config.getWidth() / (float)config.getHeight());
     }
 
     private void centerFrame() {
@@ -130,7 +134,7 @@ public class RenderView {
         return alive;
     }
 
-    public float getRatio() {
-        return ratio;
+    public Camera getCamera() {
+        return camera;
     }
 }

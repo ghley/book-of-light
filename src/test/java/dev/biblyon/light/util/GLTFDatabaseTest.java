@@ -24,8 +24,10 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.junit.jupiter.api.Test;
+import org.lwjgl.system.CallbackI;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL31.*;
 
 class GLTFDatabaseTest {
 
@@ -33,9 +35,12 @@ class GLTFDatabaseTest {
     public void test() {
         RenderView view = new RenderView();
         view.init();
+        var camera = view.getCamera();
+        camera.setPosition(new Vector3f(2,2,2));
+        camera.setTarget(new Vector3f(0,0,0));
+        camera.update();
 
-
-        var reader = GLTFReader.read("./resources/test.gltf");
+        var reader = GLTFReader.read("./resources/test5.gltf");
         var renderModel = reader.toRenderModel(0);
 
         var program = renderModel.getProgram();
@@ -43,11 +48,24 @@ class GLTFDatabaseTest {
         var material = renderModel.getMaterial();
 
         material.mat4.put("model", new Matrix4f().identity());
-        material.mat4.put("view", new Matrix4f().lookAt(new Vector3f(2,2,2), new Vector3f(0,0,0), new Vector3f(0, 1, 0)));
-        material.mat4.put("projection", new Matrix4f().perspective((float)Math.toRadians(80), view.getRatio(), 0.0001f, 200f ));
-        material.apply(program);
+        material.vec3.put("color", new Vector3f(0.8f,0.8f,0.8f));
+
+        Vector3f[] offsets = new Vector3f[100];
+        for (int q = 0; q < 10; q++) {
+            for (int r = 0; r < 10; r++) {
+                offsets[q*10 + r] = new Vector3f(q, r, 0);
+            }
+        }
+
+        float t = 0;
 
         while (view.isAlive()) {
+            t += 0.01f;
+            var v = new Vector3f(20,10,-4);
+            material.vec3v.put("lightPos", new Vector3f[] { v});
+
+            material.apply(program);
+
             view.preRender();
 
             vao.bind();
@@ -55,6 +73,7 @@ class GLTFDatabaseTest {
             material.apply(program);
 
             glDrawElements(GL_TRIANGLES, renderModel.getSize(), GL_UNSIGNED_SHORT, 0);
+//            glDrawElementsInstanced(GL_TRIANGLES, renderModel.getSize(), GL_UNSIGNED_SHORT, 0, 100);
 
             view.postRender();
         }

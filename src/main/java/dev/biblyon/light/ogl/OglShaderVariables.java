@@ -34,6 +34,8 @@ public class OglShaderVariables {
     public Map<String, Vector3f> vec3 = new HashMap<>();
     public Map<String, Matrix3f> mat3 = new HashMap<>();
     public Map<String, Matrix4f> mat4 = new HashMap<>();
+    public Map<String, float[]> fv = new HashMap<>();
+    public Map<String, Vector3f[]> vec3v = new HashMap<>();
 
     public Map<String, int[]> tex2d = new HashMap<>();
 
@@ -67,6 +69,18 @@ public class OglShaderVariables {
             glActiveTexture(GL_TEXTURE0 + entry.getValue()[0]);
             glUniform1i(program.getLocation(entry.getKey()), entry.getValue()[0]);
             glBindTexture(GL_TEXTURE_2D, entry.getValue()[1]);
+        }
+        for (var entry : fv.entrySet()) {
+            glUniform1fv(program.getLocation(entry.getKey()), entry.getValue());
+        }
+        for (var entry : vec3v.entrySet()) {
+            float[] arr = new float[entry.getValue().length*3];
+            for (int q = 0; q < entry.getValue().length; q++) {
+                for (int i = 0; i < 3; i++) {
+                    arr[q * 3 + i] = entry.getValue()[q].get(i);
+                }
+            }
+            glUniform3fv(program.getLocation(entry.getKey()), arr);
         }
     }
 }

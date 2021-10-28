@@ -28,6 +28,6 @@ public class OglUniformBuffer extends OglBuffer{
     }
 
     public void bindBase(int index) {
-        glBindBufferBase(GL_UNIFORM_BUFFER, 0, id);
+        glBindBufferBase(GL_UNIFORM_BUFFER, index, id);
     }
 }
