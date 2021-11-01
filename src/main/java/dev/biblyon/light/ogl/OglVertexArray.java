@@ -18,6 +18,8 @@
 
 package dev.biblyon.light.ogl;
 
+import dev.biblyon.light.ogl.util.VertexAttribute;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +36,7 @@ public class OglVertexArray extends OglObject {
         super(glGenVertexArrays());
     }
 
-    public void bindBuffer(OglBuffer buffer, int[] sizes, OglProgram.VertexAttribute[] vertexAttributes, int type, int typeSize) {
+    public void bindBuffer(OglBuffer buffer, int[] sizes, VertexAttribute[] vertexAttributes, int type, int typeSize) {
         referencedBuffers.add(buffer);
         bind();
         buffer.bind();

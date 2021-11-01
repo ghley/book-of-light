@@ -19,15 +19,13 @@
 package dev.biblyon.light.util;
 
 import dev.biblyon.light.RenderView;
+import dev.biblyon.light.components.ModelComponents;
+import dev.biblyon.light.system.RenderSystem;
 import dev.biblyon.light.util.gltf.GLTFReader;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
+import dev.biblyon.principle.ecs.EntityManager;
+import dev.biblyon.principle.ecs.components.TransformComponents;
 import org.joml.Vector3f;
 import org.junit.jupiter.api.Test;
-import org.lwjgl.system.CallbackI;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL31.*;
 
 class GLTFDatabaseTest {
 
@@ -43,37 +41,41 @@ class GLTFDatabaseTest {
         var reader = GLTFReader.read("./resources/test5.gltf");
         var renderModel = reader.toRenderModel(0);
 
-        var program = renderModel.getProgram();
-        var vao = renderModel.getVao();
-        var material = renderModel.getMaterial();
+//        var program = renderModel.getProgram();
+//        var vao = renderModel.getVao();
+//        var material = renderModel.getMaterial();
 
-        material.mat4.put("model", new Matrix4f().identity());
-        material.vec3.put("color", new Vector3f(0.8f,0.8f,0.8f));
+        EntityManager entityManager = new EntityManager();
+        var entity = entityManager.createEntity();
 
-        Vector3f[] offsets = new Vector3f[100];
-        for (int q = 0; q < 10; q++) {
-            for (int r = 0; r < 10; r++) {
-                offsets[q*10 + r] = new Vector3f(q, r, 0);
-            }
-        }
+        RenderSystem system = new RenderSystem(new TransformComponents(), new ModelComponents());
+        system.createNewModel(entity, renderModel);
 
-        float t = 0;
+//        Vector3f[] offsets = new Vector3f[100];
+//        for (int q = 0; q < 10; q++) {
+//            for (int r = 0; r < 10; r++) {
+//                offsets[q*10 + r] = new Vector3f(q, r, 0);
+//            }
+//        }
+//
+//        float t = 0;
 
         while (view.isAlive()) {
-            t += 0.01f;
-            var v = new Vector3f(20,10,-4);
-            material.vec3v.put("lightPos", new Vector3f[] { v});
-
-            material.apply(program);
-
+//            var v = new Vector3f(20,10,-4);
+//            material.vec3v.put("lightPos", new Vector3f[] { v });
+//
+//            material.apply(program);
+//
             view.preRender();
+//
+//            vao.bind();
+//            program.bind();
+//            material.apply(program);
 
-            vao.bind();
-            program.bind();
-            material.apply(program);
-
-            glDrawElements(GL_TRIANGLES, renderModel.getSize(), GL_UNSIGNED_SHORT, 0);
+//            glDrawElements(GL_TRIANGLES, renderModel.getSize(), GL_UNSIGNED_SHORT, 0);
 //            glDrawElementsInstanced(GL_TRIANGLES, renderModel.getSize(), GL_UNSIGNED_SHORT, 0, 100);
+
+            system.renderAll();
 
             view.postRender();
         }

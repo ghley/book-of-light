@@ -18,15 +18,24 @@
 
 package dev.biblyon.light.ogl;
 
+import dev.biblyon.light.ogl.util.MaterialType;
+
 public class OglMaterial extends OglShaderVariables {
-    private float[] pbr = new float[Material.values().length];
+    private float[] pbr;
 
     public OglMaterial() {
-        set(Material.SPECULAR, 0.5f);
-        set(Material.ROUGHNESS, 0.5f);
-        set(Material.SHEEN_TINT, 0.5f);
-        set(Material.CLEAR_COAT_GLOSS, 1f);
-        fv.put("pbr", pbr);
+        float[] arr = new float[MaterialType.values().length];
+        fv.put("pbr", arr);
+        this.pbr = fv.get("pbr");
+        set(MaterialType.SPECULAR, 0.5f);
+        set(MaterialType.ROUGHNESS, 0.5f);
+        set(MaterialType.SHEEN_TINT, 0.5f);
+        set(MaterialType.CLEAR_COAT_GLOSS, 1f);
+    }
+
+    public OglMaterial(OglMaterial copyOf) {
+        super(copyOf);
+        this.pbr = fv.get("pbr");
     }
 
     public void setBaseTexture(int baseTexture) {
@@ -45,21 +54,7 @@ public class OglMaterial extends OglShaderVariables {
         tex2d.put("emissive", new int[]{3, emissive});
     }
 
-    public void set(Material material, float value) {
-        pbr[material.ordinal()] = value;
+    public void set(MaterialType type, float value) {
+        pbr[type.ordinal()] = value;
     }
-
-    public enum Material {
-        SPECULAR,
-        SPECULAR_TINT,
-        ROUGHNESS,
-        METALLIC,
-        SHEEN,
-        SHEEN_TINT,
-        ANISOTROPIC,
-        CLEAR_COAT,
-        CLEAR_COAT_GLOSS,
-        SUBSURFACE;
-    }
-
 }

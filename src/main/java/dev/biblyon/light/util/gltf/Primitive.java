@@ -21,18 +21,19 @@ package dev.biblyon.light.util.gltf;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import dev.biblyon.light.ogl.OglProgram;
+import dev.biblyon.light.ogl.util.VertexAttribute;
 
 import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 class Primitive {
-    public Map<OglProgram.VertexAttribute, Integer> attributes;
+    public Map<VertexAttribute, Integer> attributes;
     public Integer material;
     public Integer indices;
     public PrimitiveMode mode;
 
     @JsonIgnore
-    public Map<OglProgram.VertexAttribute, Accessor> attributeAccessors;
+    public Map<VertexAttribute, Accessor> attributeAccessors;
     @JsonIgnore
     public Accessor indicesAccessor;
     @JsonIgnore

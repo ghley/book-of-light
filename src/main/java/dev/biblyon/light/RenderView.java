@@ -19,6 +19,7 @@
 package dev.biblyon.light;
 
 import dev.biblyon.light.model.Camera;
+import dev.biblyon.light.model.Skylight;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
@@ -39,6 +40,7 @@ public class RenderView {
     private boolean alive = true;
 
     private Camera camera;
+
 
     public RenderView() {
         this(RenderViewConfig.DEFAULT);
@@ -105,6 +107,7 @@ public class RenderView {
         if (!alive) {
             return;
         }
+        glViewport(0, 0, config.getWidth(), config.getHeight()); // TODO quick fix for framebuffers interfering
         glClearColor(0.2f,0.3f,0.4f,1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         alive = !glfwWindowShouldClose(window);

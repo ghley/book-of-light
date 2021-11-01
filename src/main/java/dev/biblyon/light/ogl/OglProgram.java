@@ -19,6 +19,7 @@
 package dev.biblyon.light.ogl;
 
 import dev.biblyon.principle.utils.PrincipleUtils;
+import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL20;
 
 import java.util.HashMap;
@@ -80,11 +81,13 @@ public class OglProgram extends OglObject {
         return location;
     }
 
-    public enum VertexAttribute {
-        POSITION, NORMAL, TANGENT,
-        TEXCOORD_0, JOINTS_0, WEIGHTS_0,
-        COLOR_0, TEXCOORD_1, JOINTS_1, WEIGHTS_1,
-        TEXCOORD_2, JOINTS_2,
-        WEIGHTS_2
+    public void set(String name, int value) {
+        glUniform1i(getLocation(name), value);
+    }
+
+    public void set(String name, Matrix4f mat) {
+        float[] mat4Arr = new float[16];
+        mat.get(mat4Arr);
+        glUniformMatrix4fv(getLocation(name), false, mat4Arr);
     }
 }

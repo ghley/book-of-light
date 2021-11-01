@@ -23,11 +23,16 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.lwjgl.opengl.GL20.*;
 
+/**
+ * Only exists currently for quick prototyping,
+ * finale version will have fixed variables
+ */
 public class OglShaderVariables {
     public Map<String, Float> scalar = new HashMap<>();
     public Map<String, Vector2f> vec2 = new HashMap<>();
@@ -41,6 +46,26 @@ public class OglShaderVariables {
 
     private float[] mat3Arr = new float[9];
     private float[] mat4Arr = new float[16];
+
+    public OglShaderVariables() {
+    }
+
+    public OglShaderVariables(OglShaderVariables copyOf) {
+        copyOf.scalar.forEach((key, value) -> this.scalar.put(key, value));
+        copyOf.vec2.forEach((key, value) -> this.vec2.put(key, new Vector2f(value)));
+        copyOf.vec3.forEach((key, value) -> this.vec3.put(key, new Vector3f(value)));
+        copyOf.mat3.forEach((key, value) -> this.mat3.put(key, new Matrix3f(value)));
+        copyOf.mat4.forEach((key, value) -> this.mat4.put(key, new Matrix4f(value)));
+        copyOf.fv.forEach((key, value) -> this.fv.put(key, Arrays.copyOf(value, value.length)));
+        copyOf.tex2d.forEach((key, value) -> this.tex2d.put(key, Arrays.copyOf(value, value.length)));
+        copyOf.vec3v.forEach((key, value) -> {
+            Vector3f[] newArray = new Vector3f[value.length];
+            for (int q = 0; q < newArray.length; q++) {
+                newArray[q] = new Vector3f(value[q]);
+            }
+            vec3v.put(key, newArray);
+        });
+    }
 
     public void apply(OglProgram program){
         program.bind();

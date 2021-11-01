@@ -21,6 +21,8 @@ package dev.biblyon.light.util.gltf;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.biblyon.light.model.RenderModel;
 import dev.biblyon.light.ogl.*;
+import dev.biblyon.light.ogl.util.MaterialType;
+import dev.biblyon.light.ogl.util.VertexAttribute;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -34,6 +36,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 
+import static dev.biblyon.light.ogl.util.TextureUtil.processImage;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
@@ -58,7 +61,7 @@ public class GLTFReader {
         var primitive = mesh.primitives[0];
         Material material = primitive.materialObj;
 
-        OglProgram.VertexAttribute[] attributes = primitive.attributes.keySet().stream().sorted().toArray(OglProgram.VertexAttribute[]::new);
+        VertexAttribute[] attributes = primitive.attributes.keySet().stream().sorted().toArray(VertexAttribute[]::new);
         Accessor[] accessors = new Accessor[attributes.length];
         int[] sizes = new int[attributes.length];
         int[] offsets = new int[attributes.length];
@@ -104,6 +107,8 @@ public class GLTFReader {
         vao.setSize(count);
 
         OglMaterial oglMaterial = new OglMaterial();
+        oglMaterial.set(MaterialType.METALLIC, material.pbrMetallicRoughness.metallicFactor);
+        oglMaterial.set(MaterialType.ROUGHNESS, material.pbrMetallicRoughness.roughnessFactor);
         if (material.pbrMetallicRoughness.baseColorTexture != null) {
             int image = processImage(material.pbrMetallicRoughness.baseColorTexture.texture.image.image);
             oglMaterial.setBaseTexture(image);
@@ -114,34 +119,6 @@ public class GLTFReader {
         return model;
     }
 
-    private int processImage(BufferedImage image) {
-        int[] pixels = new int[image.getWidth() * image.getHeight()];
-        image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
-        ByteBuffer buffer = ByteBuffer.allocateDirect(image.getWidth() * image.getHeight() * 4);
-
-        for(int h = 0; h < image.getHeight(); h++) {
-            for(int w = 0; w < image.getWidth(); w++) {
-                int pixel = pixels[h * image.getWidth() + w];
-
-                buffer.put((byte) ((pixel >> 16) & 0xFF));
-                buffer.put((byte) ((pixel >> 8) & 0xFF));
-                buffer.put((byte) (pixel & 0xFF));
-                buffer.put((byte) ((pixel >> 24) & 0xFF));
-            }
-        }
-
-        buffer.flip();
-
-        int id = glGenTextures();
-        glBindTexture(GL_TEXTURE_2D, id);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image.getWidth(), image.getHeight(),
-                0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-        glGenerateMipmap(GL_TEXTURE_2D);
-        return id;
-    }
 
     public void load() {
         String json = "";
